@@ -10,8 +10,6 @@ To apply migrations to data base run command: *dotnet ef database update*
 
 To revert a migration, you need to revert your db to the previous migration by running this command: *dotnet ef database update YourPreviousMigrationName --context DataContext*
 
-after that delete your migration files that were created and run: *dotnet ef database update*
-
 # BoilerPlate 
 
 To jump start the project, boilerplate was downloaded from:
