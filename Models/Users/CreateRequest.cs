@@ -14,6 +14,8 @@ public class CreateRequest
     [Required]
     public long CountryId { get; set; }
     [Required]
+    public long LanguageId { get; set; }
+    [Required]
     [EmailAddress]
     public string Email { get; set; }
     [Required]

@@ -46,7 +46,7 @@ public class UserService : IUserService
 
         // map model to new user object
         var user = _mapper.Map<User>(model);
-
+        user.CreatedDate = DateTime.UtcNow;
         // hash password
         user.PasswordHash = BCrypt.HashPassword(model.Password);
 
