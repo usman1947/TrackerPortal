@@ -6,26 +6,19 @@ using WebApi.Entities;
 public class CreateRequest
 {
     [Required]
-    public string Title { get; set; }
-
+    public string GivenName { get; set; }
     [Required]
-    public string FirstName { get; set; }
-
+    public string Surname { get; set; }
     [Required]
-    public string LastName { get; set; }
-
+    public long Age { get; set; }
     [Required]
-    [EnumDataType(typeof(Role))]
-    public string Role { get; set; }
-
+    public long CountryId { get; set; }
     [Required]
     [EmailAddress]
     public string Email { get; set; }
-
     [Required]
     [MinLength(6)]
     public string Password { get; set; }
-
     [Required]
     [Compare("Password")]
     public string ConfirmPassword { get; set; }

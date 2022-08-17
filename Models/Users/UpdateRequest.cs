@@ -5,12 +5,10 @@ using WebApi.Entities;
 
 public class UpdateRequest
 {
-    public string Title { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-
-    [EnumDataType(typeof(Role))]
-    public string Role { get; set; }
+    public string GivenName { get; set; }
+    public string Surname { get; set; }
+    public long Age { get; set; }
+    public long CountryId { get; set; }
 
     [EmailAddress]
     public string Email { get; set; }
