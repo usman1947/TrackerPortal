@@ -3,6 +3,12 @@
 Database Schema can be found at this link (Note that the link will let you edit but not save)
 https://drawsql.app/teams/workoutplanner/diagrams/workoutplanner
 
+# Migrations
+To add new migration add use command: *dotnet ef migrations add YourMigrationName --context DataContext*
+ 
+To apply migrations to data base run command: *dotnet ef database update*
+
+
 # BoilerPlate 
 
 To jump start the project, boilerplate was downloaded from:
