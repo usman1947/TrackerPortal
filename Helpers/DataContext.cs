@@ -1,5 +1,5 @@
 namespace WebApi.Helpers;
-
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Entities;
 
@@ -10,6 +10,13 @@ public class DataContext : DbContext
     public DataContext(IConfiguration configuration)
     {
         Configuration = configuration;
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
