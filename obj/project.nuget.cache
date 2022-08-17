@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fZFw9PNo1CBcjgAGQPw2TBLn0reQQDgKesn8+i/mBysKuQifZ7r8kAx8EkQxGjA+m0DqUmWCty+CrrsIRLHh0g==",
+  "dgSpecHash": "GYOdCMqVaRKaqyyZzFLwqVPjA9GXy4eqls3xKWoSpEf9REgcvabBMLRVkIkN9Aw0R1nm7QSKQZMtW4IhAZ8b8g==",
   "success": true,
-  "projectFilePath": "/Users/usman/Desktop/TrackerPortal/WebApi.csproj",
+  "projectFilePath": "/Users/usman/TrackerPortal/WebApi.csproj",
   "expectedPackageFiles": [
     "/Users/usman/.nuget/packages/automapper/11.0.1/automapper.11.0.1.nupkg.sha512",
     "/Users/usman/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/11.0.0/automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

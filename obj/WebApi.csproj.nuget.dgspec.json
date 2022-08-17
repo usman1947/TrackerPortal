@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/usman/Desktop/TrackerPortal/WebApi.csproj": {}
+    "/Users/usman/TrackerPortal/WebApi.csproj": {}
   },
   "projects": {
-    "/Users/usman/Desktop/TrackerPortal/WebApi.csproj": {
+    "/Users/usman/TrackerPortal/WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/usman/Desktop/TrackerPortal/WebApi.csproj",
+        "projectUniqueName": "/Users/usman/TrackerPortal/WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "/Users/usman/Desktop/TrackerPortal/WebApi.csproj",
+        "projectPath": "/Users/usman/TrackerPortal/WebApi.csproj",
         "packagesPath": "/Users/usman/.nuget/packages/",
-        "outputPath": "/Users/usman/Desktop/TrackerPortal/obj/",
+        "outputPath": "/Users/usman/TrackerPortal/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/usman/.nuget/NuGet/NuGet.Config"
