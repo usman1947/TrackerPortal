@@ -1,0 +1,15 @@
+./obj
+/bin
+/dockerfiles/**/obj
+/dockerfiles/**/bin
+obj
+bin
+appsettings.Development.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Production.json
+lambda-file-zipper/node_modules
+lambda-file-zipper/.DS_Store
+lambda-file-zipper/封存.zip
+.DS_Store
+.env*
