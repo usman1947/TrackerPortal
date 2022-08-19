@@ -5,43 +5,44 @@ using BCrypt.Net;
 using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Models.Users;
-
+using Microsoft.EntityFrameworkCore;
 public interface IUserService
 {
-    IEnumerable<User> GetAll();
-    User GetById(int id);
+    Task<List<User>> GetAll();
+    Task<User> GetById(long id);
     void Create(CreateRequest model);
-    void Update(int id, UpdateRequest model);
-    void Delete(int id);
+    void Update(long id, UpdateRequest model);
+    void Delete(long id);
 }
 
 public class UserService : IUserService
 {
-    private DataContext _context;
+    private DataContext _db;
     private readonly IMapper _mapper;
 
     public UserService(
-        DataContext context,
+        DataContext db,
         IMapper mapper)
     {
-        _context = context;
+        _db = db;
         _mapper = mapper;
     }
 
-    public IEnumerable<User> GetAll()
+    async public Task<List<User>> GetAll()
     {
-        return _context.Users;
+        var users = await _db.Users.Include(x => x.Country).ToListAsync();
+        return users;
     }
 
-    public User GetById(int id)
+    async public Task<User> GetById(long id)
     {
-        return getUser(id);
+        return await getUser(id);
     }
 
     public void Create(CreateRequest model)
     {
         // validate
-        if (_context.Users.Any(x => x.Email == model.Email))
+        if (_db.Users.Any(x => x.Email == model.Email))
             throw new AppException("User with the email '" + model.Email + "' already exists");
 
         // map model to new user object
@@ -51,16 +52,16 @@ public class UserService : IUserService
         user.PasswordHash = BCrypt.HashPassword(model.Password);
 
         // save user
-        _context.Users.Add(user);
-        _context.SaveChanges();
+        _db.Users.Add(user);
+        _db.SaveChanges();
     }
 
-    public void Update(int id, UpdateRequest model)
+    async public void Update(long id, UpdateRequest model)
     {
-        var user = getUser(id);
+        var user = await getUser(id);
 
         // validate
-        if (model.Email != user.Email && _context.Users.Any(x => x.Email == model.Email))
+        if (model.Email != user.Email && _db.Users.Any(x => x.Email == model.Email))
             throw new AppException("User with the email '" + model.Email + "' already exists");
 
         // hash password if it was entered
@@ -69,22 +70,24 @@ public class UserService : IUserService
 
         // copy model to user and save
         _mapper.Map(model, user);
-        _context.Users.Update(user);
-        _context.SaveChanges();
+        _db.Users.Update(user);
+        _db.SaveChanges();
     }
 
-    public void Delete(int id)
+    async public void Delete(long id)
     {
-        var user = getUser(id);
-        _context.Users.Remove(user);
-        _context.SaveChanges();
+        var user = await getUser(id);
+        _db.Users.Remove(user);
+        _db.SaveChanges();
     }
 
     // helper methods
-
-    private User getUser(int id)
+    async private Task<User> getUser(long id)
     {
-        var user = _context.Users.Find(id);
+        var user = await _db.Users
+                        .Include(user => user.Country)
+                        .Where(user => user.Id == id)
+                        .FirstOrDefaultAsync();
         if (user == null) throw new KeyNotFoundException("User not found");
         return user;
     }
