@@ -18,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 
         // ignore omitted parameters on models to enable optional params (e.g. User update)
         x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
