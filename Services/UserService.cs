@@ -6,14 +6,6 @@ using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Models.Users;
 using Microsoft.EntityFrameworkCore;
-public interface IUserService
-{
-    Task<List<User>> GetAll();
-    Task<User> GetById(long id);
-    void Create(CreateRequest model);
-    void Update(long id, UpdateRequest model);
-    void Delete(long id);
-}
 
 public class UserService : IUserService
 {
@@ -39,7 +31,7 @@ public class UserService : IUserService
         return await getUser(id);
     }
 
-    public void Create(CreateRequest model)
+    public void Create(CreateUserDto model)
     {
         // validate
         if (_db.Users.Any(x => x.Email == model.Email))
@@ -56,7 +48,7 @@ public class UserService : IUserService
         _db.SaveChanges();
     }
 
-    async public void Update(long id, UpdateRequest model)
+    async public void Update(long id, UpdateUserDto model)
     {
         var user = await getUser(id);
 

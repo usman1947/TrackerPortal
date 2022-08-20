@@ -35,14 +35,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(CreateRequest model)
+    public IActionResult Create(CreateUserDto model)
     {
         _userService.Create(model);
         return Ok(new { message = "User created" });
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(long id, UpdateRequest model)
+    public IActionResult Update(long id, UpdateUserDto model)
     {
         _userService.Update(id, model);
         return Ok(new { message = "User updated" });
