@@ -1,23 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
-using WebApi.Entities;
 
 namespace WebApi.Configurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class SetConfiguration : IEntityTypeConfiguration<Set>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Set> builder)
         {
+            builder.ToTable("Set");
+
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnType("bigint")
                 .ValueGeneratedOnAdd()
                 .IsRequired();
+
+            builder.Property(e => e.ExerciseId).IsRequired();
             
-            builder.HasOne(e => e.Country)
-                .WithMany()
-                .HasForeignKey(e=>e.CountryId);
+            builder.HasOne(s => s.Exercise)
+                .WithMany(b => b.Sets)
+                .HasForeignKey(s => s.ExerciseId);
         }
     }
 }
