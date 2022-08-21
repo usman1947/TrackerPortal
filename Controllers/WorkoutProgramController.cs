@@ -2,7 +2,7 @@ namespace WebApi.Controllers;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models;
+using WebApi.Models.Workout;
 using WebApi.Services;
 
 [ApiController]
@@ -31,6 +31,13 @@ public class WorkoutProgramController : ControllerBase
     public async Task<IActionResult> GetById(long id)
     {
         var program = await _workoutProgramService.GetById(id);
+        return Ok(program);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateWorkoutProgram([FromBody] AddWorkoutProgramDto dto)
+    {
+        var program = await _workoutProgramService.CreateWorkoutProgram(dto);
         return Ok(program);
     }
 }

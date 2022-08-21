@@ -6,9 +6,9 @@ using WebApi.Models.Users;
 
 public interface IUserService
 {
-    Task<List<User>> GetAll();
-    Task<User> GetById(long id);
-    void Create(CreateUserDto model);
-    void Update(long id, UpdateUserDto model);
-    void Delete(long id);
+    Task<ResultLog<List<User>>> GetAll();
+    Task<ResultLog<User>> GetById(long id);
+    ResultLog<User> Create(CreateUserDto model);
+    Task<ResultLog<User>> Update(long id, UpdateUserDto model);
+    Task<ResultLog<User>> Delete(long id);
 }

@@ -27,4 +27,6 @@ public class DataContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<WorkoutProgram> WorkoutPrograms { get; set; }
+    public DbSet<WorkoutProgramUserMapping> WorkoutProgramUserMappings { get; set; }
+
 }

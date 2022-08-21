@@ -11,27 +11,31 @@ public class UserService : IUserService
 {
     private DataContext _db;
     private readonly IMapper _mapper;
+    protected readonly ILogger<UserService> _logger;
+
 
     public UserService(
         DataContext db,
+        ILogger<UserService> logger, 
         IMapper mapper)
     {
         _db = db;
+        _logger = logger;
         _mapper = mapper;
     }
 
-    async public Task<List<User>> GetAll()
+    async public Task<ResultLog<List<User>>> GetAll()
     {
         var users = await _db.Users.Include(x => x.Country).ToListAsync();
-        return users;
+        return ResultLog<List<User>>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, users);
     }
 
-    async public Task<User> GetById(long id)
+    async public Task<ResultLog<User>> GetById(long id)
     {
-        return await getUser(id);
+        return await GetUser(id);;
     }
 
-    public void Create(CreateUserDto model)
+    public ResultLog<User> Create(CreateUserDto model)
     {
         // validate
         if (_db.Users.Any(x => x.Email == model.Email))
@@ -46,11 +50,17 @@ public class UserService : IUserService
         // save user
         _db.Users.Add(user);
         _db.SaveChanges();
+        return ResultLog<User>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, user);
     }
 
-    async public void Update(long id, UpdateUserDto model)
+    async public Task<ResultLog<User>> Update(long id, UpdateUserDto model)
     {
-        var user = await getUser(id);
+        var result = await GetUser(id);
+        if (result.Success == false)
+        {
+            return result;
+        }
+        var user = result.Data;
 
         // validate
         if (model.Email != user.Email && _db.Users.Any(x => x.Email == model.Email))
@@ -64,23 +74,34 @@ public class UserService : IUserService
         _mapper.Map(model, user);
         _db.Users.Update(user);
         _db.SaveChanges();
+        return ResultLog<User>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, user); 
     }
 
-    async public void Delete(long id)
+    async public Task<ResultLog<User>> Delete(long id)
     {
-        var user = await getUser(id);
+        var result = await GetUser(id);
+        if (result.Success == false)
+        {
+            return result;
+        }
+        var user = result.Data;
         _db.Users.Remove(user);
         _db.SaveChanges();
+        return ResultLog<User>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS);
     }
 
     // helper methods
-    async private Task<User> getUser(long id)
+    async private Task<ResultLog<User>> GetUser(long id)
     {
         var user = await _db.Users
                         .Include(user => user.Country)
                         .Where(user => user.Id == id)
                         .FirstOrDefaultAsync();
-        if (user == null) throw new KeyNotFoundException("User not found");
-        return user;
+        if (user == null)
+        {
+            _logger.LogError("User not found userId: {userId}", id);
+            return ResultLog<User>.CreateFail(TranslationConstant._NOT_FOUND);
+        } 
+        return ResultLog<User>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, user);
     }
 }
