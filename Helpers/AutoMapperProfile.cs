@@ -9,10 +9,10 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         // CreateRequest -> User
-        CreateMap<CreateRequest, User>();
+        CreateMap<CreateUserDto, User>();
 
         // UpdateRequest -> User
-        CreateMap<UpdateRequest, User>()
+        CreateMap<UpdateUserDto, User>()
             .ForAllMembers(x => x.Condition(
                 (src, dest, prop) =>
                 {

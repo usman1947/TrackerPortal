@@ -3,7 +3,7 @@ namespace WebApi.Models.Users;
 using System.ComponentModel.DataAnnotations;
 using WebApi.Entities;
 
-public class UpdateRequest
+public class UpdateUserDto
 {
     public string GivenName { get; set; }
     public string Surname { get; set; }

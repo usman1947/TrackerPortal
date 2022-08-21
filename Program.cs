@@ -24,6 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     // configure DI for application services
     services.AddScoped<IUserService, UserService>();
+    services.AddScoped<IWorkoutProgramService, WorkoutProgramService>();
 }
 
 var app = builder.Build();
