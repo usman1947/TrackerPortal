@@ -6,6 +6,6 @@ using WebApi.Models.Users;
 
 public interface IWorkoutProgramService
 {
-    Task<List<WorkoutProgram>> GetAll();
-    Task<WorkoutProgram> GetById(long id);
+    Task<ResultLog<List<WorkoutProgram>>> GetAll();
+    Task<ResultLog<WorkoutProgram>> GetById(long id);
 }

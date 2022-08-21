@@ -20,24 +20,27 @@ public class WorkoutProgramService : IWorkoutProgramService
         _mapper = mapper;
     }
 
-    async public Task<List<WorkoutProgram>> GetAll()
+    async public Task<ResultLog<List<WorkoutProgram>>> GetAll()
     {
         var programs = await _db.WorkoutPrograms.ToListAsync();
-        return programs;
+        return ResultLog<List<WorkoutProgram>>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, programs);
     }
 
-    async public Task<WorkoutProgram> GetById(long id)
+    async public Task<ResultLog<WorkoutProgram>> GetById(long id)
     {
         return await getWorkoutProgram(id);
     }
 
     // helper methods
-    async private Task<WorkoutProgram> getWorkoutProgram(long id)
+    async private Task<ResultLog<WorkoutProgram>> getWorkoutProgram(long id)
     {
         var program = await _db.WorkoutPrograms
                         .Where(p => p.Id == id)
                         .FirstOrDefaultAsync();
-        if (program == null) throw new KeyNotFoundException("WorkoutProgram not found");
-        return program;
+        if (program == null) 
+        {
+            return ResultLog<WorkoutProgram>.CreateFail(TranslationConstant._NOT_FOUND);
+        }
+        return ResultLog<WorkoutProgram>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, program);;
     }
 }
