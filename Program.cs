@@ -27,6 +27,7 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IWorkoutProgramService, WorkoutProgramService>();
     services.AddScoped<IWorkoutProgramUserMappingService, WorkoutProgramUserMappingService>();
     services.AddScoped<IWorkoutProgramMappingService, WorkoutProgramMappingService>();
+    services.AddScoped<IWorkoutService, WorkoutService>();
 }
 
 var app = builder.Build();
