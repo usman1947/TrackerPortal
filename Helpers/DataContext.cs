@@ -30,4 +30,5 @@ public class DataContext : DbContext
     public DbSet<Workout> Workouts { get; set; }
     public DbSet<WorkoutProgramUserMapping> WorkoutProgramUserMappings { get; set; }
     public DbSet<WorkoutProgramMapping> WorkoutProgramMappings { get; set; }
+    public DbSet<Exercise> Exercises { get; set; }
 }
