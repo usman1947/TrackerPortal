@@ -1,24 +1,59 @@
-# TrackerPortal Schema
+# WorkoutTrackerApp Backend Repo
 
+
+## About The Project
+This project is to practice my dotnet skills and build a Relational BE structure for WorkoutTrackerApp
+
+## Installation
+1. Clone the repository
+```
+https://github.com/usman1947/TrackerPortal.git
+```
+2. You will need Postgres server running in background at port 5433
+3. Change appsetting.json to update Db password and hostname
+4. Run this command
+```
+dotnet watch run 
+```
+
+## Db Schema
 Database Schema can be found at this link (Note that the link will let you edit but not save)
+```
 https://drawsql.app/teams/workoutplanner/diagrams/workoutplanner
+```
 
-# Migrations
-To add new migration add use command: *dotnet ef migrations add YourMigrationName --context DataContext*
- 
-To apply migrations to data base run command: *dotnet ef database update*
+## Migrations
+* To Add New Migrations
+```
+dotnet ef migrations add YourMigrationName --context DataContext
+```
 
-To revert a migration, you need to revert your db to the previous migration by running this command: 
-*dotnet ef database update YourPreviousMigrationName --context DataContext*
+* To Apply Latest Migration to Database
+```
+dotnet ef database update
+```
 
-After this your need to run the command: *dotnet ef migrations remove --context TenantDbContext*
-This will delete the new created migration files and update the snapshot.
+* To Remove Last Created Migrations, You Need to Revert Your DB To Previous Migration (if applied to DB already)
+```
+dotnet ef database update YourPreviousMigrationName --context DataContext
+```
 
-# BoilerPlate 
+* To Delete Last Created Migration Files
+```
+dotnet ef migrations remove --context TenantDbContext
+````
+
+## BoilerPlate 
 
 To jump start the project, boilerplate was downloaded from:
+```
 https://jasonwatmore.com/post/2022/06/23/net-6-connect-to-postgresql-database-with-entity-framework-core
-
+```
+* BoilerPlate documentation:
+```
 documentation plate: https://jasonwatmore.com/post/2022/03/15/net-6-crud-api-example-and-tutorial
-
+```
+* BoilerPlate github:
+```
 GitHub: https://github.com/cornflourblue/dotnet-6-crud-api
+```
