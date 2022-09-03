@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
+using WebApi.Entities;
 namespace WebApi.Configurations
 {
     public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>

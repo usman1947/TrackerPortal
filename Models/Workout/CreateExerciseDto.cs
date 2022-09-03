@@ -1,6 +1,6 @@
-namespace WebApi.Models.Workout;
-
 using System.ComponentModel.DataAnnotations;
+using WebApi.Entities;
+namespace WebApi.Models.Workout;
 
 public class CreateExerciseDto
 {

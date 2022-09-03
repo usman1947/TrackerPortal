@@ -49,7 +49,6 @@ public class WorkoutProgramService : IWorkoutProgramService
         {
             Name = dto.Name,
             Description = dto.Description,
-            CreatedDate = DateTime.UtcNow
         };
         _db.WorkoutPrograms.Add(program);
         _db.SaveChanges();
@@ -58,7 +57,6 @@ public class WorkoutProgramService : IWorkoutProgramService
         {
             UserId = dto.UserId,
             WorkoutProgramId = program.Id,
-            CreatedDate = DateTime.UtcNow
         };
         _db.WorkoutProgramUserMappings.Add(mapping);
         _db.SaveChanges();

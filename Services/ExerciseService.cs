@@ -54,7 +54,6 @@ public class ExerciseService : IExerciseService
             {
                 WorkoutId = dto.WorkoutId,
                 ExerciseId = exercise.Id,
-                CreatedDate = DateTime.UtcNow
             };
             _db.Add(mapping);
             await _db.SaveChangesAsync();

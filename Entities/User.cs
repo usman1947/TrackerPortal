@@ -1,8 +1,7 @@
-namespace WebApi;
-
 using System.Text.Json.Serialization;
+namespace WebApi.Entities;
 
-public class User
+public class User : IAuditable
 {
     public long Id { get; set; }
     public string GivenName { get; set; }
@@ -15,4 +14,5 @@ public class User
     [JsonIgnore]
     public string PasswordHash { get; set; }
     public DateTime CreatedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 }

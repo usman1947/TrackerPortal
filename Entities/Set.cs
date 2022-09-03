@@ -1,6 +1,6 @@
-namespace WebApi;
+namespace WebApi.Entities;
 
-public class Set
+public class Set : IAuditable
 {
     public long Id { get; set; }
     public long TargetCount { get; set; }
@@ -10,4 +10,5 @@ public class Set
     public long ExerciseId { get; set; }
     public Exercise Exercise { get; set; }
     public DateTime CreatedDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 }
