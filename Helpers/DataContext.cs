@@ -25,6 +25,56 @@ public class DataContext : DbContext
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDatabase"));
     }
 
+    #region Auditable
+        public override int SaveChanges()
+        {
+            AddContextCompletion();
+
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            AddContextCompletion();
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void AddContextCompletion()
+        {
+            Audit();
+        }
+
+        private void Audit()
+        {
+            // Get auditable.
+            var addedEntries = ChangeTracker.Entries()
+                .Where(e => e.Entity is IAuditable)
+                .Where(e => e.State == EntityState.Added);
+
+            var modifiedEntries = ChangeTracker.Entries()
+                .Where(e => e.Entity is IAuditable)
+                .Where(e => e.State == EntityState.Modified);
+
+            foreach (var entry in addedEntries)
+            {
+                if (entry.Entity is IAuditable auditableEntry)
+                {
+                    auditableEntry.CreatedDate = DateTime.UtcNow;
+                    auditableEntry.ModifiedDate = DateTime.UtcNow;
+                }
+            }
+
+            foreach (var entry in modifiedEntries)
+            {
+                if (entry.Entity is IAuditable auditableEntry)
+                {
+                    auditableEntry.ModifiedDate = DateTime.UtcNow;
+                }
+            }
+        }
+        #endregion
+
     public DbSet<User> Users { get; set; }
     public DbSet<WorkoutProgram> WorkoutPrograms { get; set; }
     public DbSet<Workout> Workouts { get; set; }
