@@ -34,6 +34,13 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
+    [HttpGet("{id}/workoutPrograms")]
+    public async Task<IActionResult> GetUserWorkoutPrograms(long id)
+    {
+        var user = await _userService.GetUserWorkoutPrograms(id);
+        return Ok(user);
+    }
+
     [HttpPost]
     public IActionResult Create(CreateUserDto model)
     {
