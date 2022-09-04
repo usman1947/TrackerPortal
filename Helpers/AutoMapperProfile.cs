@@ -3,6 +3,8 @@ namespace WebApi.Helpers;
 using AutoMapper;
 using WebApi.Entities;
 using WebApi.Models.Users;
+using WebApi.Models.Workout;
+
 
 public class AutoMapperProfile : Profile
 {
@@ -23,5 +25,9 @@ public class AutoMapperProfile : Profile
                     return true;
                 }
             ));
+
+        CreateMap<User, UserCompleteWorkoutProgramDto>().ReverseMap();
+        CreateMap<WorkoutProgram, WorkoutProgramWithWorkoutDto>().ReverseMap();
+        CreateMap<Workout, WorkoutWithExerciseDto>().ReverseMap();
     }
 }
