@@ -37,4 +37,28 @@ public class WorkoutExerciseMappingService : IWorkoutExerciseMappingService
             
         return ResultLog<List<WorkoutExerciseMapping>>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, exercises);
     }
+
+    async public Task<ResultLog<List<WorkoutWithExerciseDto>>> GetWorkoutsWithExercises(List<Workout> workouts)
+    {
+        var workoutOutDtoList = new List<WorkoutWithExerciseDto>();
+
+        foreach (var workout in workouts)
+        {
+            //adding workout info
+            var workoutOutDto = _mapper.Map<WorkoutWithExerciseDto>(workout);
+            workoutOutDtoList.Add(workoutOutDto);
+
+            //adding exercise info with sets
+            var exercisesForWorkoutMapping = await GetAllByWorkoutId(workout.Id);
+            if (exercisesForWorkoutMapping.Success == false)
+            {
+                _logger.LogInformation("No exercise found for workout Id : {id}, Name : {name}", workout.Id, workout.Name);
+                continue;
+            }
+            var exercisesInWorkout = exercisesForWorkoutMapping.Data.Select(m => m.Exercise).ToList();
+            workoutOutDto.Exercises = exercisesInWorkout;
+        }
+
+        return ResultLog<List<WorkoutWithExerciseDto>>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, workoutOutDtoList);
+    }
 }

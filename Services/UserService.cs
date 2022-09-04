@@ -15,7 +15,6 @@ public class UserService : IUserService
     protected readonly ILogger<UserService> _logger;
     private IWorkoutProgramUserMappingService _workoutProgramUserMappingService;
     private IWorkoutProgramMappingService _workoutProgramMappingService;
-    private IWorkoutExerciseMappingService _workoutExerciseMappingService;
 
 
     public UserService(
@@ -23,7 +22,6 @@ public class UserService : IUserService
         ILogger<UserService> logger, 
         IWorkoutProgramUserMappingService workoutProgramUserMappingService,
         IWorkoutProgramMappingService workoutProgramMappingService,
-        IWorkoutExerciseMappingService workoutExerciseMappingService,
         IMapper mapper)
     {
         _db = db;
@@ -31,7 +29,6 @@ public class UserService : IUserService
         _mapper = mapper;
         _workoutProgramUserMappingService = workoutProgramUserMappingService;
         _workoutProgramMappingService = workoutProgramMappingService;
-        _workoutExerciseMappingService = workoutExerciseMappingService;
     }
 
     async public Task<ResultLog<List<User>>> GetAll()
@@ -56,39 +53,9 @@ public class UserService : IUserService
             return ResultLog<UserCompleteWorkoutProgramDto>.CreateFail(TranslationConstant._NOT_FOUND); 
 
         var programs = userWorkoutProgramMappings.Data.Select(p => p.WorkoutProgram).ToList();
-        var programDtoList = new List<WorkoutProgramWithWorkoutDto>();
-        foreach (var program in programs)
-        {
-            var programDto = _mapper.Map<WorkoutProgramWithWorkoutDto>(program);
-            var workoutProgramMappingList = await _workoutProgramMappingService.GetAllByWorkoutProgramId(program.Id);
-            if (workoutProgramMappingList.Success == false)
-            {
-                _logger.LogInformation("No workouts found for program Id : {id}, Name : {name}", program.Id, program.Name);
-                programDtoList.Add(programDto);
-                continue;
-            }
-            var workoutsInProgram = workoutProgramMappingList.Data.Select(m => m.Workout).ToList();
-            var workoutOutDtoList = new List<WorkoutWithExerciseDto>();
-            foreach (var workout in workoutsInProgram)
-            {
-                var workoutOutDto = _mapper.Map<WorkoutWithExerciseDto>(workout);
-                var exercisesForWorkoutMapping = await _workoutExerciseMappingService.GetAllByWorkoutId(workout.Id);
-                if (exercisesForWorkoutMapping.Success == false)
-                {
-                    _logger.LogInformation("No exercise found for workout Id : {id}, Name : {name}", workout.Id, workout.Name);
-                    workoutOutDtoList.Add(workoutOutDto);
-                    continue;
-                }
-                var exercisesInWorkout = exercisesForWorkoutMapping.Data.Select(m => m.Exercise).ToList();
-                workoutOutDto.Exercises = exercisesInWorkout;
-                workoutOutDtoList.Add(workoutOutDto);
-            }
-            programDto.Workouts = workoutOutDtoList;
-            programDtoList.Add(programDto);
-        }
+        var programDtoList = await _workoutProgramMappingService.GetAllWorkoutsForPrograms(programs);
         var userWorkouts = _mapper.Map<UserCompleteWorkoutProgramDto>(user.Data);
-        userWorkouts.WorkoutPrograms = programDtoList;
-        
+        userWorkouts.WorkoutPrograms = programDtoList.Data;
         
         return ResultLog<UserCompleteWorkoutProgramDto>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, userWorkouts); 
     }
