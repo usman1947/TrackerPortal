@@ -9,19 +9,16 @@ public class WorkoutProgramMappingService : IWorkoutProgramMappingService
 {
     private DataContext _db;
     private readonly IMapper _mapper;
-    private IUserService _userService;
     protected readonly ILogger<WorkoutProgramMappingService> _logger;
 
 
     public WorkoutProgramMappingService(
         DataContext db,
-        IUserService userService,
         ILogger<WorkoutProgramMappingService> logger, 
         IMapper mapper)
     {
         _db = db;
         _logger = logger;
-        _userService = userService;
         _mapper = mapper;
     }
 
@@ -41,6 +38,9 @@ public class WorkoutProgramMappingService : IWorkoutProgramMappingService
                         .Include(m => m.Workout)
                         .Include(m => m.WorkoutProgram)
                         .ToListAsync();
+                        
+        if(mappings.Count == 0)
+            return ResultLog<List<WorkoutProgramMapping>>.CreateFail(TranslationConstant._NOT_FOUND);
 
         return ResultLog<List<WorkoutProgramMapping>>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, mappings);
     }
@@ -52,6 +52,9 @@ public class WorkoutProgramMappingService : IWorkoutProgramMappingService
                         .Include(m => m.Workout)
                         .Include(m => m.WorkoutProgram)
                         .ToListAsync();
+
+        if(mappings.Count == 0)
+            return ResultLog<List<WorkoutProgramMapping>>.CreateFail(TranslationConstant._NOT_FOUND);
 
         return ResultLog<List<WorkoutProgramMapping>>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, mappings);
     }
