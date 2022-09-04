@@ -22,6 +22,12 @@ Database Schema can be found at this link (Note that the link will let you edit 
 https://drawsql.app/teams/workoutplanner/diagrams/workoutplanner
 ```
 
+## Postman Api Collection
+Some of the useful Apis can be found in this collection.
+```
+https://www.getpostman.com/collections/350ada4eb2e1469b4748
+```
+
 ## Migrations
 * To Add New Migrations
 ```
