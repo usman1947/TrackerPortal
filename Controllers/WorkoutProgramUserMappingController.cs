@@ -2,7 +2,6 @@ namespace WebApi.Controllers;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models.Workout;
 using WebApi.Services;
 
 [ApiController]
@@ -24,6 +23,13 @@ public class WorkoutProgramUserMappingController : ControllerBase
     public async Task<IActionResult> GetAllByUserId(long id)
     {
         var program = await _workoutProgramUserMappingService.GetAllByUserId(id);
+        return Ok(program);
+    }
+
+    [HttpPost("user/{userId}/workoutProgram/{workoutProgramId}")]
+    public async Task<IActionResult> LinkWorkoutProgramToUser(long userId, long workoutProgramId)
+    {
+        var program = await _workoutProgramUserMappingService.LinkWorkoutProgramToUser(userId, workoutProgramId);
         return Ok(program);
     }
 }
