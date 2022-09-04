@@ -5,6 +5,7 @@ using BCrypt.Net;
 using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Models.Users;
+using WebApi.Models.Workout;
 using Microsoft.EntityFrameworkCore;
 
 public class UserService : IUserService
@@ -12,16 +13,22 @@ public class UserService : IUserService
     private DataContext _db;
     private readonly IMapper _mapper;
     protected readonly ILogger<UserService> _logger;
+    private IWorkoutProgramUserMappingService _workoutProgramUserMappingService;
+    private IWorkoutProgramMappingService _workoutProgramMappingService;
 
 
     public UserService(
         DataContext db,
         ILogger<UserService> logger, 
+        IWorkoutProgramUserMappingService workoutProgramUserMappingService,
+        IWorkoutProgramMappingService workoutProgramMappingService,
         IMapper mapper)
     {
         _db = db;
         _logger = logger;
         _mapper = mapper;
+        _workoutProgramUserMappingService = workoutProgramUserMappingService;
+        _workoutProgramMappingService = workoutProgramMappingService;
     }
 
     async public Task<ResultLog<List<User>>> GetAll()
@@ -32,7 +39,25 @@ public class UserService : IUserService
 
     async public Task<ResultLog<User>> GetById(long id)
     {
-        return await GetUser(id);;
+        return await GetUser(id);
+    }
+
+    async public Task<ResultLog<UserCompleteWorkoutProgramDto>> GetUserWorkoutPrograms(long id)
+    {
+        var user = await GetUser(id);
+        if (user.Success == false)
+            return ResultLog<UserCompleteWorkoutProgramDto>.CreateFail(TranslationConstant._NOT_FOUND); 
+            
+        var userWorkoutProgramMappings = await _workoutProgramUserMappingService.GetAllByUserId(id);
+        if (userWorkoutProgramMappings.Success == false)
+            return ResultLog<UserCompleteWorkoutProgramDto>.CreateFail(TranslationConstant._NOT_FOUND); 
+
+        var programs = userWorkoutProgramMappings.Data.Select(p => p.WorkoutProgram).ToList();
+        var programDtoList = await _workoutProgramMappingService.GetAllWorkoutsForPrograms(programs);
+        var userWorkouts = _mapper.Map<UserCompleteWorkoutProgramDto>(user.Data);
+        userWorkouts.WorkoutPrograms = programDtoList.Data;
+        
+        return ResultLog<UserCompleteWorkoutProgramDto>.CreateSuccess(TranslationConstant._OPERATION_SUCCESS, userWorkouts); 
     }
 
     public ResultLog<User> Create(CreateUserDto model)

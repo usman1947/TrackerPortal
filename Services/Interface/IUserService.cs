@@ -3,6 +3,7 @@ namespace WebApi.Services;
 
 using WebApi.Entities;
 using WebApi.Models.Users;
+using WebApi.Models.Workout;
 
 public interface IUserService
 {
@@ -11,4 +12,5 @@ public interface IUserService
     ResultLog<User> Create(CreateUserDto model);
     Task<ResultLog<User>> Update(long id, UpdateUserDto model);
     Task<ResultLog<User>> Delete(long id);
+    Task<ResultLog<UserCompleteWorkoutProgramDto>> GetUserWorkoutPrograms(long id);
 }
